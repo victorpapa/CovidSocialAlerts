@@ -25,7 +25,7 @@ class SimulationFramework:
         for node in self.__dataRetriever.G.nodes:
 
             if self.__current_day == 0:
-                node_gets_infected = random.random() < 0.05
+                node_gets_infected = random.random() < 0.001
             else:
                 is_already_infected = self.__is_infected(node)
 

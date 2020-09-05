@@ -33,23 +33,26 @@ class DataRetriever:
         self.__setup_logs()
 
         self.res_folder = os.path.join(self.backend_folder, "res")
-        self.social_network_file_name = os.path.join(self.res_folder, "facebook_combined.txt")
+        self.social_network_file_name = os.path.join(self.res_folder, "infectinessHeroes", "hero-network.csv")
         self.social_network_file = open(self.social_network_file_name, "r")
-        self.dataset = "facebook"
-        self.dataset_folder = os.path.join(self.res_folder, self.dataset)
+        # self.dataset = "facebook"
+        # self.dataset_folder = os.path.join(self.res_folder, self.dataset)
 
         self.__generate_graph()
 
     def __add_nodes_and_edges(self):
 
         for line in self.social_network_file:
-            ids = line.split()
-
-            if len(ids) != 2:
-                print("Invalid edge format: " + str(ids))
-                exit()
+            if "\"" not in line:
+                continue
             
-            ids = [int(id) for id in ids]
+            ids = line.split("\"")
+
+            # if len(ids) != 2:
+            #     print("Invalid edge format: " + str(ids))
+            #     exit()
+            
+            ids = [ids[1], ids[3]]
             
             self.G.add_nodes_from(ids, last_infection_time = -100,
                                        location = -1,
@@ -125,7 +128,7 @@ class DataRetriever:
         self.G = nx.Graph()
 
         self.__add_nodes_and_edges()
-        self.__add_nodes_and_edges_metadata()
+        # self.__add_nodes_and_edges_metadata()
 
     def log_graph(self):
         for node in self.G.nodes.data():
