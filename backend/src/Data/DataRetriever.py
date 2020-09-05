@@ -135,7 +135,7 @@ class DataRetriever:
             logging.info(edge)
 
     def graph(self):
-        return G
+        return self.G
 
 if __name__ == "__main__":
     dataRetriever = DataRetriever()
