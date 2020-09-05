@@ -2,6 +2,7 @@ import sys
 sys.path.append('.')
 from Data.DataRetriever import DataRetriever
 import random
+import time
 
 class SimulationFramework:
 
@@ -51,9 +52,12 @@ class SimulationFramework:
             for node in self.__dataRetriever.G.nodes:
                 total_infected += self.__is_infected(node)
 
-            print("There are " + str(total_infected) + " infected people.")
+            # print("There are " + str(total_infected) + " infected people.")
 
-            print("Running covid force field")
+            # print("Running covid force field")
+            time.sleep(15)
+
+
             
 
     def __init__(self, data_retriever):
