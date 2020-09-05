@@ -1,10 +1,6 @@
 import os
 import networkx as nx
-import sys
 import logging
-sys.path.append('..')
-
-from Utils.TxtToCsvConverter import generate_social_network_csv
 
 class DataRetriever:
 
@@ -17,7 +13,7 @@ class DataRetriever:
     backend_folder = None
 
     def __setup_logs(self):
-        self.backend_folder = os.path.join(os.getcwd(), "..", "..")
+        self.backend_folder = os.path.join(os.getcwd(), "..")
         log_folder_name = "log"
         if log_folder_name not in os.listdir(self.backend_folder):
             curr_dir = os.getcwd()
@@ -55,7 +51,7 @@ class DataRetriever:
             
             ids = [int(id) for id in ids]
             
-            self.G.add_nodes_from(ids, last_infection_time = -1,
+            self.G.add_nodes_from(ids, last_infection_time = -100,
                                        location = -1,
                                        work_location = -1)
             self.G.add_edge(ids[0], ids[1], co_worker = False)
@@ -113,7 +109,7 @@ class DataRetriever:
     def __set_co_worker_metadata(self):
         for user_id1 in self.G.nodes:
             for user_id2 in self.G.neighbors(user_id1):
-                if self.G.nodes[user_id1]["work_location"] == self.G.nodes[user_id2]["work_location"] and                self.G.nodes[user_id1]["work_location"] != -1:
+                if self.G.nodes[user_id1]["work_location"] == self.G.nodes[user_id2]["work_location"] and                            self.G.nodes[user_id1]["work_location"] != -1:
                     self.G.edges[user_id1, user_id2]["co_worker"] = True
 
     def __add_nodes_and_edges_metadata(self):
