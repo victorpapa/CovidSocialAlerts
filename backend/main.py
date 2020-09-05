@@ -27,7 +27,7 @@ def read_clusters(user_id: int):
     }
 
 @app.get("/risk/{user_id}")
-def read_likelihood(user_id: int):
+def read_user_risk(user_id: int):
     return {
         "user-id": user_id,
         "risk": 0.63,
