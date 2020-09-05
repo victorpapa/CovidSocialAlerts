@@ -20,7 +20,7 @@ class SimulationFramework:
 
         return my_sum / (len(list(self.__dataRetriever.G.neighbors(node))) * 5)
 
-    def __update_new_covid_cases(self):
+    def update_new_covid_cases(self):
 
         for node in self.__dataRetriever.G.nodes:
 
@@ -39,12 +39,12 @@ class SimulationFramework:
 
     def run_rimulation(self):
 
-        self.__update_new_covid_cases()
+        self.update_new_covid_cases()
 
         while True:
             
             # self.force_field(self.__dataRetriever.G, self.__current_day)
-            self.__update_new_covid_cases()
+            self.update_new_covid_cases()
             self.__current_day += 1
             
             total_infected = 0
@@ -53,8 +53,11 @@ class SimulationFramework:
 
             print("There are " + str(total_infected) + " infected people.")
 
-    def __init__(self):
-        self.__dataRetriever = DataRetriever()
+            print("Running covid force field")
+            
+
+    def __init__(self, data_retriever):
+        self.__dataRetriever = data_retriever
 
 if __name__ == "__main__":
     test_sim = SimulationFramework()
