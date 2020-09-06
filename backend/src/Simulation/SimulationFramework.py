@@ -40,7 +40,7 @@ class SimulationFramework:
             if node_gets_infected == True:
                 self.__dataRetriever.G.nodes[node]["last_infection_time"] = self.__current_day
 
-    def run_rimulation(self):
+    def run_simulation(self):
 
         self.update_new_covid_cases()
 
@@ -66,7 +66,10 @@ class SimulationFramework:
     def __init__(self, data_retriever):
         self.__dataRetriever = data_retriever
 
+    def set_last_infection_time_to_current_day(self, user_id):
+        self.__dataRetriever.G.nodes[user_id]["last_infection_time"] = self.__current_day
+
 if __name__ == "__main__":
     dr = DataRetriever()
     test_sim = SimulationFramework(dr)
-    test_sim.run_rimulation()
+    test_sim.run_simulation()
