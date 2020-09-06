@@ -1,4 +1,4 @@
-import { object, array, number, TypeOf } from 'zod';
+import { object, array, string, number, TypeOf } from 'zod';
 
 /*
  * If the condition is false reject with rejectReason
@@ -19,12 +19,12 @@ export function parseJSON(resp: Response) {
 }
 
 const clusterSchema = object({
-  friends: array(number()),
+  friends: array(string()),
   risk: number(),
 });
 
 const clustersSchema = object({
-  "user-id": number(),
+  "user-id": string(),
   "clusters": array(clusterSchema),
 });
 
@@ -38,7 +38,7 @@ export function getClusters(userId: string) {
 }
 
 const riskSchema = object({
-  "user-id": number(),
+  "user-id": string(),
   "risk": number().refine(x => 0 <= x && x <= 1, {
     message: "Risk must be a number between 0 and 1",
   }),
@@ -51,3 +51,8 @@ export function getRisk(userId: string) {
     .then(parseJSON)
     .then(riskSchema.parse)
 }
+
+export function declareCovid(userId: string) {
+  return fetch(`http://localhost:8000/gotit/${userId}`);
+}
+
