@@ -1,7 +1,7 @@
 import React, {
   useContext,
 } from 'react';
-import { Grommet, Main, Heading, Box } from 'grommet';
+import { Heading, Grommet, Main } from 'grommet';
 
 import GlobalContext from './contexts/GlobalContext';
 import { ClientIdContext } from './contexts/clientIdContext';
@@ -11,7 +11,7 @@ import RiskOMeter from './RiskOMeter';
 const theme = {
   global: {
     font: {
-      family: 'Roboto',
+      family: 'Titillium Web',
       size: '18px',
       height: '20px',
     },
@@ -20,7 +20,6 @@ const theme = {
 
 function App() {
   const [clientIdState] = useContext(ClientIdContext);
-  console.log(clientIdState)
 
   let app: JSX.Element;
 
@@ -33,14 +32,9 @@ function App() {
   return (
     <Grommet theme={theme}>
     <GlobalContext>
-      <Main>
-        <Box
-          border={{ color: 'brand', size: 'large' }}
-          pad="medium"
-          gap="medium"
-        >
-          {app}
-        </Box>
+      <Main alignContent="center" animation="fadeIn" margin="large">
+        <Heading>Covid Infectiness</Heading>
+        {app}
       </Main>
     </GlobalContext>
     </Grommet>
