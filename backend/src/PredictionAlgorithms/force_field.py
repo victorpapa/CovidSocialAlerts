@@ -4,8 +4,8 @@ sys.path.append('.')
 import networkx as nx
 
 from Data.DataRetriever import DataRetriever
-from Simulation.SimulationFramework import SimulationFramework
-from PredictEgoSafeClusters import PredictEgoSafeClusters
+# from Simulation.SimulationFramework import SimulationFramework
+# from PredictEgoSafeClusters import PredictEgoSafeClusters
 
 coefficients = {
     0: 1,
@@ -52,14 +52,14 @@ def infectiness(days_since_diagnosis: int) -> float:
         return 0.5
     else: return max((42 - days_since_diagnosis) / 14, 0)
 
-if __name__ == "__main__":
-    dr = DataRetriever()
+# if __name__ == "__main__":
+#     dr = DataRetriever()
 
-    sf = SimulationFramework(dr)
-    sf.update_new_covid_cases()
+#     sf = SimulationFramework(dr)
+#     sf.update_new_covid_cases()
 
-    force_field(dr.graph(), 0)
-    #dr.log_graph()
+#     force_field(dr.graph(), 0)
+#     #dr.log_graph()
 
-    test = PredictEgoSafeClusters("ROM, SPACEKNIGHT", dr)
-    test.clusterAnalysis()
+#     test = PredictEgoSafeClusters("ROM, SPACEKNIGHT", dr)
+#     test.clusterAnalysis()

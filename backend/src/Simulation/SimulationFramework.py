@@ -1,6 +1,8 @@
 import sys
 sys.path.append('.')
 from Data.DataRetriever import DataRetriever
+from PredictionAlgorithms.force_field import force_field
+from PredictionAlgorithms.PredictEgoSafeClusters import PredictEgoSafeClusters
 import random
 import time
 
@@ -55,14 +57,16 @@ class SimulationFramework:
             # print("There are " + str(total_infected) + " infected people.")
 
             # print("Running covid force field")
-            time.sleep(15)
-
-
+            force_field(self.__dataRetriever.graph(), self.__current_day)
+            aux = PredictEgoSafeClusters("ROM, SPACEKNIGHT", self.__dataRetriever)
+            tuples = aux.clusterAnalysis()
+            time.sleep(1)
             
 
     def __init__(self, data_retriever):
         self.__dataRetriever = data_retriever
 
 if __name__ == "__main__":
-    test_sim = SimulationFramework()
+    dr = DataRetriever()
+    test_sim = SimulationFramework(dr)
     test_sim.run_rimulation()
