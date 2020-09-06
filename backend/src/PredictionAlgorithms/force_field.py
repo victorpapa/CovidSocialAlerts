@@ -25,6 +25,7 @@ def force_field(G, day):
         #print("Node last infected at {} with infectiness {}".format(G.nodes[node]["last_infection_time"], node_infectiness))
         if node_infectiness > 0:
             # print("computing force field diffusion")
+            G.nodes[node]["cumulative_field_infectiness"] = node_infectiness
             for level in range(1, 4):
                 level_descendents = nx.descendants_at_distance(G, node, level)
                 # print("{} descendents at level {}".format(len(level_descendents), level))

@@ -8,11 +8,11 @@ import time
 
 class SimulationFramework:
 
-    __current_day = 0
+    current_day = 0
     __dataRetriever = None
 
     def __is_infected(self, node):
-        return self.__current_day - self.__dataRetriever.G.nodes[node]["last_infection_time"] < 10
+        return self.current_day - self.__dataRetriever.G.nodes[node]["last_infection_time"] < 10
 
     def __probability_of_infection(self, node):
         my_sum = 0
@@ -27,7 +27,7 @@ class SimulationFramework:
 
         for node in self.__dataRetriever.G.nodes:
 
-            if self.__current_day == 0:
+            if self.current_day == 0:
                 node_gets_infected = random.random() < 0.001
             else:
                 is_already_infected = self.__is_infected(node)
@@ -38,18 +38,17 @@ class SimulationFramework:
                     continue
 
             if node_gets_infected == True:
-                self.__dataRetriever.G.nodes[node]["last_infection_time"] = self.__current_day
+                self.__dataRetriever.G.nodes[node]["last_infection_time"] = self.current_day
 
     def run_simulation(self):
 
         self.update_new_covid_cases()
 
         while True:
-            
-            # self.force_field(self.__dataRetriever.G, self.__current_day)
+            # self.force_field(self.__dataRetriever.G, self.current_day)
             self.update_new_covid_cases()
-            self.__current_day += 1
-            
+            self.current_day += 1
+
             total_infected = 0
             for node in self.__dataRetriever.G.nodes:
                 total_infected += self.__is_infected(node)
@@ -57,17 +56,20 @@ class SimulationFramework:
             # print("There are " + str(total_infected) + " infected people.")
 
             # print("Running covid force field")
-            force_field(self.__dataRetriever.graph(), self.__current_day)
-            aux = PredictEgoSafeClusters("ROM, SPACEKNIGHT", self.__dataRetriever)
-            tuples = aux.clusterAnalysis()
-            time.sleep(1)
-            
+            force_field(self.__dataRetriever.graph(), self.current_day)
+            time.sleep(5)
+
 
     def __init__(self, data_retriever):
         self.__dataRetriever = data_retriever
 
     def set_last_infection_time_to_current_day(self, user_id):
-        self.__dataRetriever.G.nodes[user_id]["last_infection_time"] = self.__current_day
+        self.__dataRetriever.G.nodes[user_id]["last_infection_time"] = self.current_day
+
+    def cluster_analysis(self, userid):
+        aux = PredictEgoSafeClusters(userid, self.__dataRetriever)
+        return aux.clusterAnalysis()
+
 
 if __name__ == "__main__":
     dr = DataRetriever()

@@ -5,8 +5,8 @@ import React, {
 } from 'react';
 import { Meter, Box, Heading, Text, Button } from 'grommet';
 
-import {Risk, Clusters, Cluster} from './api';
-import {getRisk, getClusters, declareCovid} from './api';
+import {Risk, Clusters, Cluster, DaysSince} from './api';
+import {getRisk, getClusters, declareCovid, getDaysSince} from './api';
 import {ClientIdContext, ActionType} from './contexts/clientIdContext';
 
 interface IProps {
@@ -19,6 +19,7 @@ export default ({userId}: IProps) => {
     "user-id": userId,
     clusters: [],
   });
+  const [daysSince, setDaysSince] = useState<DaysSince>(0);
   const [timerId, setTimerId] = useState<NodeJS.Timeout>();
 
   useEffect(() => {
@@ -26,13 +27,16 @@ export default ({userId}: IProps) => {
        setTimerId(setInterval(() => {
           getRisk(userId).then(setRisk).catch(() => console.log("failed to fetch"));
           getClusters(userId).then(setClusters).catch(() => console.log("failed to fetch clusters"));
-        }, 1000))
+         getDaysSince(userId).then(setDaysSince).catch(() => console.log("failed to fetch clusters"));
+        }, 500))
     } else {
       clearTimeout(timerId)
     }
   }, [userId]);
 
-  const personalInfectiness = !risk.risk ? "being calculated" : risk.risk < 0.4 ? "peacefully low" : risk.risk < 0.8 ? "a little uncomfortable" : "Practically guaranteed";
+  const personalInfectiness = !risk.risk ? "being calculated" : risk.risk < 0.4 ? "peacefully low" : risk.risk < 0.8 ? "a little uncomfortable" : "practically guaranteed";
+
+  const daysSinceString = daysSince > 99 ? "You've never been wrecked you beast" : `It's been ${daysSince} days since you've been wrecked`
 
   const clusterInfos = 
     clusters.clusters
@@ -40,7 +44,10 @@ export default ({userId}: IProps) => {
       .map(c => ClusterInfo({cluster: c})) ;
   return <>
     <Heading level="2">Hey {userId}, your chance of getting wrecked is {personalInfectiness}</Heading>
-    <Button onClick={() => declareCovid(userId)} primary margin="large" label="I got wrecked"/>
+    <Box>
+      <Button onClick={() => declareCovid(userId)} primary margin="large" label="I got wrecked"/>
+      <Text>{daysSinceString}</Text>
+    </Box>
     <Heading level="3">Your social life was easy to determine. Here's each group's infectiness</Heading>
     <Box gap="medium">
       {clusterInfos}
@@ -52,10 +59,10 @@ export default ({userId}: IProps) => {
 const ClusterInfo = ({cluster}: {cluster: Cluster}) => {
   let text = "";
   let color = "status-ok";
-  if (cluster.risk >= 0.7) {
+  if (cluster.risk >= 0.6) {
     text = "Avoid.. like the.. plague";
     color = "status-error";
-  } else if (cluster.risk >= 0.3) {
+  } else if (cluster.risk >= 0.2) {
     text = "Don't hug";
     color = "status-warning";
   } else {

@@ -56,3 +56,12 @@ export function declareCovid(userId: string) {
   return fetch(`http://localhost:8000/gotit/${userId}`);
 }
 
+const daysSinceSchema = number();
+
+export type DaysSince = TypeOf<typeof daysSinceSchema>
+
+export function getDaysSince(userId: string) {
+  return fetch(`http://localhost:8000/dayssince/${userId}`)
+  .then(parseJSON)
+  .then(daysSinceSchema.parse);
+}
